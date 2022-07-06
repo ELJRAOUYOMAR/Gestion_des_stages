@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="61680e1686894be4b3faca82b24e577e" Name="Diagram1">
+        <EntityTypeShape EntityType="GestionStageModel.Absence" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionStageModel.Alerte" Width="1.5" PointX="5.25" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionStageModel.Historique" Width="1.5" PointX="10" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionStageModel.PieceJointe" Width="1.5" PointX="5.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionStageModel.Stage" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionStageModel.Stagiaire" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionStageModel.Tache" Width="1.5" PointX="7.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionStageModel.Tach" Width="1.5" PointX="10" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionStageModel.TypeRole" Width="1.5" PointX="10" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GestionStageModel.Utilisateur" Width="1.5" PointX="7.75" PointY="2" IsExpanded="true" />
+        <AssociationConnector Association="GestionStageModel.FK_Absence_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="GestionStageModel.FK_Alerte_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="GestionStageModel.FK_Historique_Utilisateur" ManuallyRouted="false" />
+        <AssociationConnector Association="GestionStageModel.FK_PieceJointe_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="GestionStageModel.FK_Stage_Stagiaire" ManuallyRouted="false" />
+        <AssociationConnector Association="GestionStageModel.FK_Taches_Tache" ManuallyRouted="false" />
+        <AssociationConnector Association="GestionStageModel.FK_TypeRole_Utilisateur" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace projectezeze.Stage
+{
+    public partial class Form1 : Form
+    {
+        int mov, movx, movy ,id ,id2;
+
+        EntityFramework.GestionStage eg = new EntityFramework.GestionStage();
+
+        MainStage ms;
+        public Form1(MainStage MS ,int ID ,int ID2)
+        {
+            InitializeComponent();
+            id = ID;
+            ms=MS;
+            id2 = ID2;
+        }
+
+       
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if (id2 == 1)
+            {
+                label1.Text = "Voulez-vous vraiment supprimer ce stage ?";
+            }
+            if (id2 == 2)
+            {
+                label1.Text = "Voulez-vous vraiment supprimer ce dossier ?";
+            }
+        }
+
+        private void guna2Button8_Click(object sender, EventArgs e)
+        {
+            if (id2 == 1)
+            {
+                var req = eg.Stage.FirstOrDefault(x=>x.IdStage==id);
+                eg.Stage.Remove(req);
+                eg.SaveChanges();
+                ms.dataGridView1.DataSource = eg.Stage.Select(x => new { x.IdStage, x.Stagiaire.Cin, x.Type, x.Formation, Duree = x.Duree, x.Dossier.Libelle }).ToList();
+                ms.dataGridView1.Columns[0].Visible = false;
+               
+            }
+            if (id2 == 2)
+            {
+                int id = (int)ms.dataGridView2.CurrentRow.Cells[0].Value;
+                var req = eg.Dossier.FirstOrDefault(x => x.IdDossier == id);
+                eg.Dossier.Remove(req);
+                eg.SaveChanges();
+               ms.dataGridView2.DataSource = eg.Dossier.Select(x => new { x.IdDossier, x.Libelle, x.DateCreation }).ToList();
+               ms.dataGridView2.Columns[0].Visible = false;
+               ms.dataGridView1.DataSource = eg.Stage.Select(x => new { x.IdStage, x.Stagiaire.Cin, x.Type, x.Formation, Duree = x.Duree, x.Dossier.Libelle }).ToList();
+               ms.dataGridView1.Columns[0].Visible = false;
+                
+            } 
+            this.Close();
+
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            mov = 1;movx=e.X;movy=e.Y;
+        }
+        private void panel1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mov == 1)
+            {
+                this.SetDesktopLocation(MousePosition.X - movx, MousePosition.Y - movy);
+            }
+        }  
+        private void panel1_MouseUp(object sender, MouseEventArgs e)
+        {
+            mov = 0;
+        }
+    }
+}

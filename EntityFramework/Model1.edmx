@@ -1,0 +1,641 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="GestionStageModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Absence">
+          <Key>
+            <PropertyRef Name="IdAbsence" />
+          </Key>
+          <Property Name="IdAbsence" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateDebut" Type="date" />
+          <Property Name="DateFin" Type="date" />
+          <Property Name="Cause" Type="varchar" MaxLength="50" />
+          <Property Name="NombreJours" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="IdStage" Type="int" />
+        </EntityType>
+        <EntityType Name="Alerte">
+          <Key>
+            <PropertyRef Name="IdAlerte" />
+          </Key>
+          <Property Name="IdAlerte" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Contenu" Type="varchar" MaxLength="10" />
+          <Property Name="DateCreation" Type="date" />
+          <Property Name="Status" Type="varchar" MaxLength="100" />
+          <Property Name="IdStage" Type="int" />
+        </EntityType>
+        <EntityType Name="Historique">
+          <Key>
+            <PropertyRef Name="IdAction" />
+          </Key>
+          <Property Name="IdAction" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Action" Type="varchar" MaxLength="100" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="IdUtilisateur" Type="int" />
+        </EntityType>
+        <EntityType Name="PieceJointe">
+          <Key>
+            <PropertyRef Name="IdPiece" />
+          </Key>
+          <Property Name="IdPiece" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PieceJointe" Type="varchar" MaxLength="100" />
+          <Property Name="TypePiece" Type="varchar" MaxLength="50" />
+          <Property Name="Chemin" Type="nvarchar(max)" />
+          <Property Name="DateCreation" Type="date" />
+          <Property Name="IdStage" Type="int" />
+          <Property Name="Photo" Type="image" />
+        </EntityType>
+        <EntityType Name="Stage">
+          <Key>
+            <PropertyRef Name="IdStage" />
+          </Key>
+          <Property Name="IdStage" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+          <Property Name="DateDebut" Type="date" />
+          <Property Name="DateFin" Type="date" />
+          <Property Name="Formation" Type="varchar" MaxLength="50" />
+          <Property Name="IntituleProjet" Type="varchar" MaxLength="50" />
+          <Property Name="DecriptionDeProjet" Type="varchar" MaxLength="200" />
+          <Property Name="IdStagiaire" Type="int" Nullable="false" />
+          <Property Name="Duree" Type="int" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Stagiaire">
+          <Key>
+            <PropertyRef Name="IdStagiaire" />
+          </Key>
+          <Property Name="IdStagiaire" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cin" Type="varchar" MaxLength="50" />
+          <Property Name="NomComplet" Type="nvarchar" MaxLength="60" />
+          <Property Name="Sexe" Type="varchar" MaxLength="50" />
+          <Property Name="Etablissement" Type="varchar" MaxLength="60" />
+          <Property Name="Adresse" Type="varchar" MaxLength="100" />
+          <Property Name="Telephone" Type="varchar" MaxLength="14" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tache">
+          <Key>
+            <PropertyRef Name="IdTache" />
+          </Key>
+          <Property Name="IdTache" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tache" Type="varchar" MaxLength="50" />
+          <Property Name="DateDebut" Type="date" />
+          <Property Name="DateFin" Type="date" />
+          <Property Name="Remarque" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Taches">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTache" Type="int" />
+          <Property Name="IdStage" Type="int" />
+        </EntityType>
+        <EntityType Name="TypeRole">
+          <Key>
+            <PropertyRef Name="IdRole" />
+          </Key>
+          <Property Name="IdRole" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUtilisateur" Type="int" />
+          <Property Name="Type" Type="int" />
+          <Property Name="Role" Type="int" />
+        </EntityType>
+        <EntityType Name="Utilisateur">
+          <Key>
+            <PropertyRef Name="IdUtilisateur" />
+          </Key>
+          <Property Name="IdUtilisateur" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cin" Type="varchar" MaxLength="50" />
+          <Property Name="NomComplet" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone" Type="varchar" MaxLength="50" />
+          <Property Name="NomUtilisateur" Type="nvarchar" MaxLength="50" />
+          <Property Name="MotDePasse" Type="varchar" MaxLength="50" />
+          <Property Name="Role" Type="bit" />
+        </EntityType>
+        <Association Name="FK_Absence_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="0..1" />
+          <End Role="Absence" Type="Self.Absence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stage">
+              <PropertyRef Name="IdStage" />
+            </Principal>
+            <Dependent Role="Absence">
+              <PropertyRef Name="IdStage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Alerte_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="0..1" />
+          <End Role="Alerte" Type="Self.Alerte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stage">
+              <PropertyRef Name="IdStage" />
+            </Principal>
+            <Dependent Role="Alerte">
+              <PropertyRef Name="IdStage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Historique_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="0..1" />
+          <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="IdUtilisateur" />
+            </Principal>
+            <Dependent Role="Historique">
+              <PropertyRef Name="IdUtilisateur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PieceJointe_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="0..1" />
+          <End Role="PieceJointe" Type="Self.PieceJointe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stage">
+              <PropertyRef Name="IdStage" />
+            </Principal>
+            <Dependent Role="PieceJointe">
+              <PropertyRef Name="IdStage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stage_Stagiaire">
+          <End Role="Stagiaire" Type="Self.Stagiaire" Multiplicity="1" />
+          <End Role="Stage" Type="Self.Stage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stagiaire">
+              <PropertyRef Name="IdStagiaire" />
+            </Principal>
+            <Dependent Role="Stage">
+              <PropertyRef Name="IdStagiaire" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Taches_Tache">
+          <End Role="Tache" Type="Self.Tache" Multiplicity="0..1" />
+          <End Role="Taches" Type="Self.Taches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tache">
+              <PropertyRef Name="IdTache" />
+            </Principal>
+            <Dependent Role="Taches">
+              <PropertyRef Name="IdTache" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TypeRole_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="0..1" />
+          <End Role="TypeRole" Type="Self.TypeRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="IdUtilisateur" />
+            </Principal>
+            <Dependent Role="TypeRole">
+              <PropertyRef Name="IdUtilisateur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GestionStageModelStoreContainer">
+          <EntitySet Name="Absence" EntityType="Self.Absence" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Alerte" EntityType="Self.Alerte" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Historique" EntityType="Self.Historique" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PieceJointe" EntityType="Self.PieceJointe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stage" EntityType="Self.Stage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stagiaire" EntityType="Self.Stagiaire" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tache" EntityType="Self.Tache" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Taches" EntityType="Self.Taches" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypeRole" EntityType="Self.TypeRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Absence_Stage" Association="Self.FK_Absence_Stage">
+            <End Role="Stage" EntitySet="Stage" />
+            <End Role="Absence" EntitySet="Absence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Alerte_Stage" Association="Self.FK_Alerte_Stage">
+            <End Role="Stage" EntitySet="Stage" />
+            <End Role="Alerte" EntitySet="Alerte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Historique_Utilisateur" Association="Self.FK_Historique_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Historique" EntitySet="Historique" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PieceJointe_Stage" Association="Self.FK_PieceJointe_Stage">
+            <End Role="Stage" EntitySet="Stage" />
+            <End Role="PieceJointe" EntitySet="PieceJointe" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stage_Stagiaire" Association="Self.FK_Stage_Stagiaire">
+            <End Role="Stagiaire" EntitySet="Stagiaire" />
+            <End Role="Stage" EntitySet="Stage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Taches_Tache" Association="Self.FK_Taches_Tache">
+            <End Role="Tache" EntitySet="Tache" />
+            <End Role="Taches" EntitySet="Taches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TypeRole_Utilisateur" Association="Self.FK_TypeRole_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="TypeRole" EntitySet="TypeRole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GestionStageModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Absence">
+          <Key>
+            <PropertyRef Name="IdAbsence" />
+          </Key>
+          <Property Name="IdAbsence" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateDebut" Type="DateTime" Precision="0" />
+          <Property Name="DateFin" Type="DateTime" Precision="0" />
+          <Property Name="Cause" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NombreJours" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="IdStage" Type="Int32" />
+          <NavigationProperty Name="Stage" Relationship="Self.FK_Absence_Stage" FromRole="Absence" ToRole="Stage" />
+        </EntityType>
+        <EntityType Name="Alerte">
+          <Key>
+            <PropertyRef Name="IdAlerte" />
+          </Key>
+          <Property Name="IdAlerte" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Contenu" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreation" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IdStage" Type="Int32" />
+          <NavigationProperty Name="Stage" Relationship="Self.FK_Alerte_Stage" FromRole="Alerte" ToRole="Stage" />
+        </EntityType>
+        <EntityType Name="Historique">
+          <Key>
+            <PropertyRef Name="IdAction" />
+          </Key>
+          <Property Name="IdAction" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Action" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="IdUtilisateur" Type="Int32" />
+          <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Historique_Utilisateur" FromRole="Historique" ToRole="Utilisateur" />
+        </EntityType>
+        <EntityType Name="PieceJointe">
+          <Key>
+            <PropertyRef Name="IdPiece" />
+          </Key>
+          <Property Name="IdPiece" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PieceJointe1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TypePiece" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Chemin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreation" Type="DateTime" Precision="0" />
+          <Property Name="IdStage" Type="Int32" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Stage" Relationship="Self.FK_PieceJointe_Stage" FromRole="PieceJointe" ToRole="Stage" />
+        </EntityType>
+        <EntityType Name="Stage">
+          <Key>
+            <PropertyRef Name="IdStage" />
+          </Key>
+          <Property Name="IdStage" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateDebut" Type="DateTime" Precision="0" />
+          <Property Name="DateFin" Type="DateTime" Precision="0" />
+          <Property Name="Formation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IntituleProjet" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DecriptionDeProjet" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IdStagiaire" Type="Int32" Nullable="false" />
+          <Property Name="Duree" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Absences" Relationship="Self.FK_Absence_Stage" FromRole="Stage" ToRole="Absence" />
+          <NavigationProperty Name="Alertes" Relationship="Self.FK_Alerte_Stage" FromRole="Stage" ToRole="Alerte" />
+          <NavigationProperty Name="PieceJointes" Relationship="Self.FK_PieceJointe_Stage" FromRole="Stage" ToRole="PieceJointe" />
+          <NavigationProperty Name="Stagiaire" Relationship="Self.FK_Stage_Stagiaire" FromRole="Stage" ToRole="Stagiaire" />
+        </EntityType>
+        <EntityType Name="Stagiaire">
+          <Key>
+            <PropertyRef Name="IdStagiaire" />
+          </Key>
+          <Property Name="IdStagiaire" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NomComplet" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Sexe" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Etablissement" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Adresse" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Stages" Relationship="Self.FK_Stage_Stagiaire" FromRole="Stagiaire" ToRole="Stage" />
+        </EntityType>
+        <EntityType Name="Tache">
+          <Key>
+            <PropertyRef Name="IdTache" />
+          </Key>
+          <Property Name="IdTache" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tache1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateDebut" Type="DateTime" Precision="0" />
+          <Property Name="DateFin" Type="DateTime" Precision="0" />
+          <Property Name="Remarque" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Taches" Relationship="Self.FK_Taches_Tache" FromRole="Tache" ToRole="Taches" />
+        </EntityType>
+        <EntityType Name="Tach">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTache" Type="Int32" />
+          <Property Name="IdStage" Type="Int32" />
+          <NavigationProperty Name="Tache" Relationship="Self.FK_Taches_Tache" FromRole="Taches" ToRole="Tache" />
+        </EntityType>
+        <EntityType Name="TypeRole">
+          <Key>
+            <PropertyRef Name="IdRole" />
+          </Key>
+          <Property Name="IdRole" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUtilisateur" Type="Int32" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="Role" Type="Int32" />
+          <NavigationProperty Name="Utilisateur" Relationship="Self.FK_TypeRole_Utilisateur" FromRole="TypeRole" ToRole="Utilisateur" />
+        </EntityType>
+        <EntityType Name="Utilisateur">
+          <Key>
+            <PropertyRef Name="IdUtilisateur" />
+          </Key>
+          <Property Name="IdUtilisateur" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NomComplet" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NomUtilisateur" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MotDePasse" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="Boolean" />
+          <NavigationProperty Name="Historiques" Relationship="Self.FK_Historique_Utilisateur" FromRole="Utilisateur" ToRole="Historique" />
+          <NavigationProperty Name="TypeRoles" Relationship="Self.FK_TypeRole_Utilisateur" FromRole="Utilisateur" ToRole="TypeRole" />
+        </EntityType>
+        <Association Name="FK_Absence_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="0..1" />
+          <End Role="Absence" Type="Self.Absence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stage">
+              <PropertyRef Name="IdStage" />
+            </Principal>
+            <Dependent Role="Absence">
+              <PropertyRef Name="IdStage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Alerte_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="0..1" />
+          <End Role="Alerte" Type="Self.Alerte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stage">
+              <PropertyRef Name="IdStage" />
+            </Principal>
+            <Dependent Role="Alerte">
+              <PropertyRef Name="IdStage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Historique_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="0..1" />
+          <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="IdUtilisateur" />
+            </Principal>
+            <Dependent Role="Historique">
+              <PropertyRef Name="IdUtilisateur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PieceJointe_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="0..1" />
+          <End Role="PieceJointe" Type="Self.PieceJointe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stage">
+              <PropertyRef Name="IdStage" />
+            </Principal>
+            <Dependent Role="PieceJointe">
+              <PropertyRef Name="IdStage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stage_Stagiaire">
+          <End Role="Stagiaire" Type="Self.Stagiaire" Multiplicity="1" />
+          <End Role="Stage" Type="Self.Stage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stagiaire">
+              <PropertyRef Name="IdStagiaire" />
+            </Principal>
+            <Dependent Role="Stage">
+              <PropertyRef Name="IdStagiaire" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Taches_Tache">
+          <End Role="Tache" Type="Self.Tache" Multiplicity="0..1" />
+          <End Role="Taches" Type="Self.Tach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tache">
+              <PropertyRef Name="IdTache" />
+            </Principal>
+            <Dependent Role="Taches">
+              <PropertyRef Name="IdTache" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TypeRole_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="0..1" />
+          <End Role="TypeRole" Type="Self.TypeRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="IdUtilisateur" />
+            </Principal>
+            <Dependent Role="TypeRole">
+              <PropertyRef Name="IdUtilisateur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GestionStage" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Absences" EntityType="Self.Absence" />
+          <EntitySet Name="Alertes" EntityType="Self.Alerte" />
+          <EntitySet Name="Historiques" EntityType="Self.Historique" />
+          <EntitySet Name="PieceJointes" EntityType="Self.PieceJointe" />
+          <EntitySet Name="Stages" EntityType="Self.Stage" />
+          <EntitySet Name="Stagiaires" EntityType="Self.Stagiaire" />
+          <EntitySet Name="Taches" EntityType="Self.Tache" />
+          <EntitySet Name="Taches1" EntityType="Self.Tach" />
+          <EntitySet Name="TypeRoles" EntityType="Self.TypeRole" />
+          <EntitySet Name="Utilisateurs" EntityType="Self.Utilisateur" />
+          <AssociationSet Name="FK_Absence_Stage" Association="Self.FK_Absence_Stage">
+            <End Role="Stage" EntitySet="Stages" />
+            <End Role="Absence" EntitySet="Absences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Alerte_Stage" Association="Self.FK_Alerte_Stage">
+            <End Role="Stage" EntitySet="Stages" />
+            <End Role="Alerte" EntitySet="Alertes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Historique_Utilisateur" Association="Self.FK_Historique_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateurs" />
+            <End Role="Historique" EntitySet="Historiques" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PieceJointe_Stage" Association="Self.FK_PieceJointe_Stage">
+            <End Role="Stage" EntitySet="Stages" />
+            <End Role="PieceJointe" EntitySet="PieceJointes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stage_Stagiaire" Association="Self.FK_Stage_Stagiaire">
+            <End Role="Stagiaire" EntitySet="Stagiaires" />
+            <End Role="Stage" EntitySet="Stages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Taches_Tache" Association="Self.FK_Taches_Tache">
+            <End Role="Tache" EntitySet="Taches" />
+            <End Role="Taches" EntitySet="Taches1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TypeRole_Utilisateur" Association="Self.FK_TypeRole_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateurs" />
+            <End Role="TypeRole" EntitySet="TypeRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GestionStageModelStoreContainer" CdmEntityContainer="GestionStage">
+          <EntitySetMapping Name="Absences">
+            <EntityTypeMapping TypeName="GestionStageModel.Absence">
+              <MappingFragment StoreEntitySet="Absence">
+                <ScalarProperty Name="IdAbsence" ColumnName="IdAbsence" />
+                <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+                <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+                <ScalarProperty Name="Cause" ColumnName="Cause" />
+                <ScalarProperty Name="NombreJours" ColumnName="NombreJours" />
+                <ScalarProperty Name="IdStage" ColumnName="IdStage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Alertes">
+            <EntityTypeMapping TypeName="GestionStageModel.Alerte">
+              <MappingFragment StoreEntitySet="Alerte">
+                <ScalarProperty Name="IdAlerte" ColumnName="IdAlerte" />
+                <ScalarProperty Name="Contenu" ColumnName="Contenu" />
+                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IdStage" ColumnName="IdStage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Historiques">
+            <EntityTypeMapping TypeName="GestionStageModel.Historique">
+              <MappingFragment StoreEntitySet="Historique">
+                <ScalarProperty Name="IdAction" ColumnName="IdAction" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IdUtilisateur" ColumnName="IdUtilisateur" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PieceJointes">
+            <EntityTypeMapping TypeName="GestionStageModel.PieceJointe">
+              <MappingFragment StoreEntitySet="PieceJointe">
+                <ScalarProperty Name="IdPiece" ColumnName="IdPiece" />
+                <ScalarProperty Name="PieceJointe1" ColumnName="PieceJointe" />
+                <ScalarProperty Name="TypePiece" ColumnName="TypePiece" />
+                <ScalarProperty Name="Chemin" ColumnName="Chemin" />
+                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+                <ScalarProperty Name="IdStage" ColumnName="IdStage" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stages">
+            <EntityTypeMapping TypeName="GestionStageModel.Stage">
+              <MappingFragment StoreEntitySet="Stage">
+                <ScalarProperty Name="IdStage" ColumnName="IdStage" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+                <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+                <ScalarProperty Name="Formation" ColumnName="Formation" />
+                <ScalarProperty Name="IntituleProjet" ColumnName="IntituleProjet" />
+                <ScalarProperty Name="DecriptionDeProjet" ColumnName="DecriptionDeProjet" />
+                <ScalarProperty Name="IdStagiaire" ColumnName="IdStagiaire" />
+                <ScalarProperty Name="Duree" ColumnName="Duree" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stagiaires">
+            <EntityTypeMapping TypeName="GestionStageModel.Stagiaire">
+              <MappingFragment StoreEntitySet="Stagiaire">
+                <ScalarProperty Name="IdStagiaire" ColumnName="IdStagiaire" />
+                <ScalarProperty Name="Cin" ColumnName="Cin" />
+                <ScalarProperty Name="NomComplet" ColumnName="NomComplet" />
+                <ScalarProperty Name="Sexe" ColumnName="Sexe" />
+                <ScalarProperty Name="Etablissement" ColumnName="Etablissement" />
+                <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Taches">
+            <EntityTypeMapping TypeName="GestionStageModel.Tache">
+              <MappingFragment StoreEntitySet="Tache">
+                <ScalarProperty Name="IdTache" ColumnName="IdTache" />
+                <ScalarProperty Name="Tache1" ColumnName="Tache" />
+                <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+                <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+                <ScalarProperty Name="Remarque" ColumnName="Remarque" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Taches1">
+            <EntityTypeMapping TypeName="GestionStageModel.Tach">
+              <MappingFragment StoreEntitySet="Taches">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IdTache" ColumnName="IdTache" />
+                <ScalarProperty Name="IdStage" ColumnName="IdStage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypeRoles">
+            <EntityTypeMapping TypeName="GestionStageModel.TypeRole">
+              <MappingFragment StoreEntitySet="TypeRole">
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="IdUtilisateur" ColumnName="IdUtilisateur" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Utilisateurs">
+            <EntityTypeMapping TypeName="GestionStageModel.Utilisateur">
+              <MappingFragment StoreEntitySet="Utilisateur">
+                <ScalarProperty Name="IdUtilisateur" ColumnName="IdUtilisateur" />
+                <ScalarProperty Name="Cin" ColumnName="Cin" />
+                <ScalarProperty Name="NomComplet" ColumnName="NomComplet" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="NomUtilisateur" ColumnName="NomUtilisateur" />
+                <ScalarProperty Name="MotDePasse" ColumnName="MotDePasse" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
